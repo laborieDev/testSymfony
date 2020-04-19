@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formTeam 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    {% if editMode %}
+    <h1>Modification d'un article</h1>
+    {% else %}
+    <h1>Création d'un article</h1>
+    {% endif %}
+
+    {{ form_start(formTeam) }}
+
+    {{ form_row(formTeam.Name, {'attr': {'placeholder':'DUPOND Michel'}}) }}
+    {{ form_row(formTeam.Company) }}
+    {{ form_row(formTeam.Salary) }}
+
+    <button type="submit" class="btn-primary btn">
+    {% if editMode %}
+        Modifier
+    {% else %}
+        Ajouter
+    {% endif %}
+    </button>
+
+    {{ form_end(formTeam) }}
+
+{% endblock %}

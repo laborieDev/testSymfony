@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>Bienvenue dans l'équipe</h1>
+<h2>Voici nos champions : </h2>
+<section>
+    {% for equipier in team %}
+        <div>
+            <h3> ----- Equipier n°{{ equipier.id }} ----- </h3> 
+            <p>Nom : {{ equipier.name }}</p>
+            <p>Entreprise : {{ equipier.company }}</p>
+            <p>Salaire : {{ equipier.salary }}</p>
+            <a href="{{ path('equipe_show', {'id':equipier.id}) }} " class="btn btn-primary">Voir sa fiche</a>
+            <br>
+        <div>
+    {% endfor %}
+</section>
+
+{% endblock %}
