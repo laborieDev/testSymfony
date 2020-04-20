@@ -12,11 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Category;
 
 use App\Repository\ArticleRepository;
 
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Form\CategoryType;
 
 class BlogController extends AbstractController
 {
@@ -102,7 +104,30 @@ class BlogController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/blog/cat/new", name="newCategory")
+     */
+    public function newCat(Request $req, ManagerRegistry $mr){
+        
+        $cat = new Category();
 
+        $form = $this->createForm(CategoryType::class, $cat);
+        
+        $form->handleRequest($req);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $manager = $mr->getManager();
+            $manager->persist($cat);
+            $manager->flush();
+
+            return $this->redirectToRoute('home');
+        }
+        
+        return $this->render('blog/createCategory.html.twig', [
+            'formCategory' => $form->createView()
+        ]);
+    }
    
 
 }
