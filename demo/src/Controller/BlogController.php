@@ -11,11 +11,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Entity\Team;
 use App\Repository\ArticleRepository;
 use App\Repository\TeamRepository;
 
 use App\Form\ArticleType;
+use App\Form\CommentType;
 use App\Form\TeamType;
 
 class BlogController extends AbstractController
@@ -52,7 +54,7 @@ class BlogController extends AbstractController
         if(!$article)
             $article = new Article();
 
-            $form = $this->createForm(ArticleType::class, $article);
+        $form = $this->createForm(ArticleType::class, $article);
         
         $form->handleRequest($req);
 
@@ -77,12 +79,27 @@ class BlogController extends AbstractController
      /**
      *  @Route("/blog/{id}", name="blog_show")
      */
-    public function show(Article $article){
+    public function show(Article $article, Request $req, ManagerRegistry $mr){
         // SI IL N'Y AVAIT QUE L'ID EN PARAMETRE ET QUE LE REPOSITORY ETAIT ABSENT DU FICHIER
         // $repo = $this->getDoctrine()->getRepository(Article::class);
         // $article = $repo->find($id);
 
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        
+        $form->handleRequest($req);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $comment->setArticle($article);
+            $comment->setCreateAt(new \DateTime());
+            
+            $manager = $mr->getManager();
+            $manager->persist($comment);
+            $manager->flush();
+        }
+
         return $this->render('blog/show.html.twig', [
+            "formComment" => $form->createView(),
             "article" => $article
         ]);
     }
