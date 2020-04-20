@@ -15,6 +15,7 @@ use App\Entity\Team;
 use App\Repository\ArticleRepository;
 use App\Repository\TeamRepository;
 
+use App\Form\ArticleType;
 use App\Form\TeamType;
 
 class BlogController extends AbstractController
@@ -51,11 +52,7 @@ class BlogController extends AbstractController
         if(!$article)
             $article = new Article();
 
-        $form = $this->createFormBuilder($article)
-                     ->add('title')
-                     ->add('content')
-                     ->add('image')
-                     ->getForm();
+            $form = $this->createForm(ArticleType::class, $article);
         
         $form->handleRequest($req);
 
