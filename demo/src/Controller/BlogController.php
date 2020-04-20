@@ -12,13 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\Article;
 use App\Entity\Comment;
-use App\Entity\Team;
+
 use App\Repository\ArticleRepository;
-use App\Repository\TeamRepository;
 
 use App\Form\ArticleType;
 use App\Form\CommentType;
-use App\Form\TeamType;
 
 class BlogController extends AbstractController
 {
@@ -105,51 +103,6 @@ class BlogController extends AbstractController
     }
 
 
-    /**
-     * @Route("/equipe", name="equipe")
-     */
-    public function team(TeamRepository $repo)
-    {
-        $team = $repo->findAll();
-        return $this->render('blog/team.html.twig', [
-            "team" => $team
-        ]);
-    }
-
-    /**
-     * @Route("/equipe/new", name="equipe_new")
-     * @Route("/equipe/{id}/edit", name="equipe_edit")
-     */
-    public function gestionTeam(Team $team = null, Request $req, ManagerRegistry $mr){
-        if(!$team)
-            $team = new Team();
-        
-        $form = $this->createForm(TeamType::class, $team);
-        $form->handleRequest($req);
-
-        if($form->isSubmitted() && $form->isValid()){
-
-            $manager = $mr->getManager();
-            $manager->persist($team);
-            $manager->flush();
-
-            return $this->redirectToRoute('equipe_show', ['id' => $team->getId()]);      
-        }
-
-        return $this->render('blog/gestTeam.html.twig',[
-            "formTeam" => $form->createView(),
-            'editMode' => $team->getId() !== null
-        ]);
-    }
-
-    /**
-     * @Route("/equipe/{id}", name="equipe_show")
-     */
-    public function team_show(Team $team)
-    {
-        return $this->render('blog/teamShow.html.twig', [
-            "team" => $team
-        ]);
-    }
+   
 
 }
