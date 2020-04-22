@@ -34,10 +34,17 @@
                   <a class="nav-link" href="{{ path('equipe_new') }}" style="user-select: auto;">Nouvel équipier</a>
                 </li>
               </ul>
-              <form class="form-inline my-2 my-lg-0" style="user-select: auto;">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" style="user-select: auto;">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit" style="user-select: auto;">Search</button>
-              </form>
+              <div class="form-inline my-2 my-lg-0" style="user-select: auto;">
+              {% if not app.user %}
+                <a href="{{ path('security_login') }}" class="btn btn-primary">
+                  Connexion
+                </a>
+              {% else %}
+                <a href="{{ path('security_logout') }}" class="btn btn-primary">
+                  Déconnexion
+                </a>
+              {% endif %}
+              </div>
             </div>
         </nav>
         {% block body %}{% endblock %}

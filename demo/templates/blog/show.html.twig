@@ -16,6 +16,7 @@
     <section class="comments">
         <h2>Les commentaires</h2>
 
+        {% if app.user %}
         <h4> Ajouter un commentaire</h4>
         
             {{ form_start(formComment) }}
@@ -28,7 +29,7 @@
                 <button type="submit" class="btn btn-primary">Ajouter</button>
             {{ form_end(formComment) }}
         
-
+        {% endif %}
         {% for comment in article.comments %}
         <div class="row">
             <div class="col-3">
