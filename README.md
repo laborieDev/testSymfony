@@ -1,6 +1,4 @@
-# testSymfony
-
-HOW TO INSTALL AND USE SYMFONY ?
+HOW TO INSTALL AND USE SYMFONY ? - README
 LABORIE Anthony - 17.04.2020
 
 Download composer.phar and install this on user/local
@@ -190,3 +188,45 @@ Execute form :
 
 For add constraints on inputs :
 	See https://symfony.com/doc/current/validation.html
+
+
+
+— 
+SECURITY
+
+For to encode passwords :
+	 encoders:
+        		App\Entity\User:
+            		algorithm: bcrypt
+On config/packages/security.yaml
+
+For to avoid to have the same email for some users:
+	https://symfony.com/doc/current/reference/constraints/UniqueEntity.html
+
+For to identified the user :
+ 	on Security.yaml :
+	
+	providers :
+		in_database : 
+           		 entity : 
+               			 class : App\Entity\User
+                			 property : email
+
+	firewalls:
+       
+       		main:
+
+            		provider : in_database
+
+           		 form_login :
+              			login_path : security_login
+               			check_path : security_login
+
+           		logout:
+                			path : security_logout
+                			target: blog
+
+For to use the user’s roles :
+	https://nouvelle-techno.fr/actualites/live-coding-gerer-les-roles-utilisateur-avec-symfony-4
+
+
